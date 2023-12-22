@@ -1,0 +1,8 @@
+with MaxValues as (
+    select 
+        *,
+        max(price) over (partition by "group") as max_value
+    from main_menu)
+select "name", "group", price
+from MaxValues
+where price = max_value
