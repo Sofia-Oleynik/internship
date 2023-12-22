@@ -1,0 +1,4 @@
+select SUM(price) as sum_price
+from (select distinct "group", price
+from MinValues
+where price = min_value and ("group" = 'Салаты' or "group" = 'Основное блюдо' or "group" = 'Напитки'))
