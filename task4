@@ -1,0 +1,3 @@
+select * 
+from veg_menu
+where veg_menu.id_dish not in (select main_menu.id_dish from main_menu)
