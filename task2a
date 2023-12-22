@@ -1,0 +1,26 @@
+with MinValues as (
+    select 
+        *,
+        min(price) over (partition by "group") as min_value
+    from (select  
+	case
+		when main_menu.id_dish is not NULL then main_menu.id_dish
+		else veg_menu.id_dish
+	end as id_dish,
+	case
+		when main_menu.name is not NULL then main_menu.name
+		else veg_menu.name
+	end as name,
+	case
+		when main_menu.group is not NULL then main_menu.group
+		else veg_menu.group
+	end as group,
+	case
+		when main_menu.price is not NULL then main_menu.price
+		else veg_menu.price
+	end as price
+from main_menu full outer join veg_menu
+on (main_menu.id_dish = veg_menu.id_dish)))
+select distinct "group", price
+from MinValues
+where price = min_value and ("group" = 'Салаты' or "group" = 'Основное блюдо' or "group" = 'Напитки')
